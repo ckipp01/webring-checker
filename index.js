@@ -24,8 +24,11 @@ const checkSites = async list => {
 const checkUrl = url => {
   return new Promise((resolve, reject) => {
     request(url, (err, response) => {
+      const lastModified = response.headers['last-modified']
+        ? response.headers['last-modified']
+        : 'No last modified info'
       const statusCode = response.statusCode
-      if (!err) resolve({ url, statusCode })
+      if (!err) resolve({ url, statusCode, lastModified })
       else reject(err)
     })
   })
