@@ -67,7 +67,7 @@ const gatherSites = () => {
 }
 
 const htmlify = list => {
-  const beginBody = `<body style="background:#111;color:#000;font-family:monospace">`
+  const beginBody = `<body style="background:#111;color:#fff;font-family:monospace">`
   const beginTable = '<table><thead><tr><th></th><th>Url</th><th>Status</th><th>Last Modified</th></thead><tbody>'
   const tableContent = list.map((site, i) => `<tr><td>${i})</td><td>${site.url}</td><td>${site.statusCode}</td><td>${site.lastModified}</td></tr>`)
   const closingTable = '</tbody></table>'
