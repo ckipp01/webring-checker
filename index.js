@@ -1,22 +1,36 @@
-const request = require('request')
+'use strict'
 
-module.exports = async (_, res) => {
+const request = require('request')
+const url = require('url')
+
+module.exports = async (req, res) => {
   try {
+    const params = url.parse(req.url, true)
+    const format = params.query.format
+      ? params.query.format
+      : 'json'
     const sites = await gatherSites()
-    const report = await checkSites(sites)
-    res.writeHead(200, { 'Content-Type': 'text/html' })
-    res.end(JSON.stringify(report))
+    const report = await checkSites(sites, format)
+    const contentType = format === 'json'
+      ? 'application/json'
+      : 'text/html'
+    res.writeHead(200, { 'Content-Type': contentType })
+    res.end(report)
   } catch (err) {
     res.writeHead(400, { 'Content-Type': 'text/plain' })
-    res.end(err)
+    res.end(err.message)
   }
 }
 
-const checkSites = async list => {
+const checkSites = async (list, format) => {
   return new Promise((resolve, reject) => {
+    if (format !== 'json' && format !== 'html') reject(Error('Unsupported format requested'))
     const results = list.map(checkUrl)
     Promise.all(results)
-      .then(data => { resolve(data) })
+      .then(data => {
+        if (format === 'json') resolve(JSON.stringify(data))
+        else resolve(htmlify(data))
+      })
       .catch(err => { reject(err) })
   })
 }
@@ -50,4 +64,14 @@ const gatherSites = () => {
       } else reject(err)
     })
   })
+}
+
+const htmlify = list => {
+  const beginBody = `<body style="background:#111;color:#000;font-family:monospace">`
+  const beginTable = '<table><thead><tr><th></th><th>Url</th><th>Status</th><th>Last Modified</th></thead><tbody>'
+  const tableContent = list.map((site, i) => `<tr><td>${i})</td><td>${site.url}</td><td>${site.statusCode}</td><td>${site.lastModified}</td></tr>`)
+  const closingTable = '</tbody></table>'
+  const closingBody = '</body>'
+  const html = [beginBody, beginTable, ...tableContent, closingTable, closingBody]
+  return html.toString().replace(/,/g, ' ')
 }
