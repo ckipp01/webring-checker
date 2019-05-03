@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "name": "webring-checker",
+  "alias": "webring-checker.now.sh",
+  "builds": [
+    { "src": "index.js", "use": "@now/node" }
+  ]
+}
