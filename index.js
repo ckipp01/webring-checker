@@ -66,13 +66,19 @@ const gatherSites = () => {
   })
 }
 
+const captureOffenders = (sites, site, i) => {
+  const offendingStyle = site.statusCode > 200
+    ? ` style="color:#F03" `
+    : ''
+  return `${sites}<tr${offendingStyle}><td>${i})</td><td>${site.url}</td><td>${site.statusCode}</td><td>${site.lastModified}</td></tr>`
+}
+
 const htmlify = list => {
   const beginBody = `<body style="background:#111;color:#fff;font-family:monospace">`
   const beginTable = '<table><thead><tr><th></th><th>Url</th><th>Status</th><th>Last Modified</th></thead><tbody>'
-  const tableContent = list.map((site, i) => `<tr><td>${i})</td><td>${site.url}</td><td>${site.statusCode}</td><td>${site.lastModified}</td></tr>`)
+  const tableContent = list.reduce(captureOffenders, '')
   const closingTable = '</tbody></table>'
   const whatIsThis = `<h5><a target="_blank" href="https://wiki.chronica.xyz/#webring-checker">What is this?</a></h5>`
   const closingBody = '</body>'
-  const html = [beginBody, beginTable, ...tableContent, closingTable, whatIsThis, closingBody]
-  return html.toString().replace(/,/g, ' ')
+  return beginBody + beginTable + tableContent + closingTable + whatIsThis + closingBody
 }
