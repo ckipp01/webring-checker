@@ -14,9 +14,11 @@ module.exports = async (req, res) => {
     const contentType = format === 'json'
       ? 'application/json'
       : 'text/html'
+    console.info(`Successfully gathered ${format} report`)
     res.writeHead(200, { 'Content-Type': contentType })
     res.end(report)
   } catch (err) {
+    console.error(err.message)
     res.writeHead(400, { 'Content-Type': 'text/plain' })
     res.end(err.message)
   }
@@ -24,7 +26,7 @@ module.exports = async (req, res) => {
 
 const checkSites = async (list, format) => {
   return new Promise((resolve, reject) => {
-    if (format !== 'json' && format !== 'html') reject(Error('Unsupported format requested'))
+    if (format !== 'json' && format !== 'html') reject(Error(`Unsupported format ${format} requested`))
     const results = list.map(checkUrl)
     Promise.all(results)
       .then(data => {
