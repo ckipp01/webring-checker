@@ -9,8 +9,12 @@ module.exports = async (req, res) => {
     const format = params.query.format
       ? params.query.format
       : 'json'
+    console.time('gatherSites')
     const sites = await gatherSites()
+    console.timeEnd('gatherSites')
+    console.time('checkSites')
     const report = await checkSites(sites, format)
+    console.timeEnd('checkSites')
     const contentType = format === 'json'
       ? 'application/json'
       : 'text/html'
@@ -70,7 +74,7 @@ const gatherSites = () => {
 
 const captureOffenders = (sites, site, i) => {
   const offendingStyle = site.statusCode > 200
-    ? ` style="color:#F03" `
+    ? ` style="color:#F03"`
     : ''
   return `${sites}<tr${offendingStyle}><td>${i})</td><td>${site.url}</td><td>${site.statusCode}</td><td>${site.lastModified}</td></tr>`
 }
