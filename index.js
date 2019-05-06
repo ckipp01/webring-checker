@@ -26,7 +26,7 @@ module.exports = async (req, res) => {
   } catch (err) {
     console.error(err.message)
     res.writeHead(400, { 'Content-Type': 'text/plain' })
-    res.end('Sorry, something went wrong')
+    res.end(err.message)
   }
 }
 
