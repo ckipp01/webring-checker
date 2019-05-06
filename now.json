@@ -3,6 +3,11 @@
   "name": "webring-checker",
   "alias": "webring-checker.now.sh",
   "builds": [
-    { "src": "index.js", "use": "@now/node" }
+    { "src": "index.js", "use": "@now/node" },
+    { "src": "api/index.js", "use": "@now/node" }
+  ],
+  "routes": [
+    { "src": "/", "methods": ["GET"],  "dest": "index.js" },
+    { "src": "/sites", "methods": ["GET"],  "dest": "api/index.js" }
   ]
 }

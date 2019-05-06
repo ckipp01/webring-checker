@@ -3,6 +3,8 @@
 const request = require('request')
 const url = require('url')
 
+const { gatherSites } = require('./utils/utils')
+
 module.exports = async (req, res) => {
   try {
     const params = url.parse(req.url, true)
@@ -24,7 +26,7 @@ module.exports = async (req, res) => {
   } catch (err) {
     console.error(err.message)
     res.writeHead(400, { 'Content-Type': 'text/plain' })
-    res.end(err.message)
+    res.end('Sorry, something went wrong')
   }
 }
 
@@ -50,24 +52,6 @@ const checkUrl = url => {
       const statusCode = response.statusCode
       if (!err) resolve({ url, statusCode, lastModified })
       else reject(err)
-    })
-  })
-}
-
-const gatherSites = () => {
-  return new Promise((resolve, reject) => {
-    request('https://webring.xxiivv.com/scripts/sites.js', (err, _, body) => {
-      if (!err) {
-        const begin = body.indexOf('[') + 1
-        const end = body.indexOf(']')
-
-        const sites = body
-          .slice(begin, end)
-          .split(',')
-          .map(url => url.trim())
-          .map(url => url.replace(/"/g, ''))
-        resolve(sites)
-      } else reject(err)
     })
   })
 }
