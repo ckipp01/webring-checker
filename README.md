@@ -1,10 +1,8 @@
 # webring-checker
 
-Small service to check the status of the sites in [the webring](https://webring.xxiivv.com).
+Small api and service to check the status of the sites in [the webring](https://webring.xxiivv.com), and to provide a list of sites. The following options are available.
 
-Two formats available via query string:
-  - `GET /?format=json` 
-  - `GET /?format=html`
-
-If you simply want a list of all the sites that are part of the webring, you can hit the following:
-  - `GET /sites`
+  - `GET / will return a description page`
+  - `GET /check?format=html` will return an html report of all sites, their status code, and last modified date if available
+  - `GET /check?format=json` will return the same info as the html format, but in json
+  - `GET /sites` will return a json array of sites that are part of the webring

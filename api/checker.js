@@ -3,7 +3,7 @@
 const request = require('request')
 const url = require('url')
 
-const { gatherSites } = require('./utils/utils')
+const { gatherSites } = require('../utils/utils')
 
 module.exports = async (req, res) => {
   try {
@@ -69,6 +69,7 @@ const htmlify = list => {
   const tableContent = list.reduce(captureOffenders, '')
   const closingTable = '</tbody></table>'
   const whatIsThis = `<h5><a target="_blank" href="https://wiki.chronica.xyz/#webring-checker">What is this?</a></h5>`
+  const goToWebring = `<h5><a target="_blank" href="https://webring.xxiivv.com">Go to xxiivv webring</a></h5>`
   const closingBody = '</body>'
-  return beginBody + beginTable + tableContent + closingTable + whatIsThis + closingBody
+  return beginBody + beginTable + tableContent + closingTable + whatIsThis + goToWebring + closingBody
 }

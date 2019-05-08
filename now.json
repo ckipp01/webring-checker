@@ -3,11 +3,15 @@
   "name": "webring-checker",
   "alias": "webring-checker.now.sh",
   "builds": [
-    { "src": "index.js", "use": "@now/node" },
-    { "src": "api/index.js", "use": "@now/node" }
+		{ "src": "*.html", "use": "@now/static" },
+		{ "src": "style/*.css", "use": "@now/static" },
+		{ "src": "fonts/*.ttf", "use": "@now/static" },
+    { "src": "api/*.js", "use": "@now/node" }
   ],
   "routes": [
-    { "src": "/", "methods": ["GET"],  "dest": "index.js" },
-    { "src": "/sites", "methods": ["GET"],  "dest": "api/index.js" }
+    { "src": "/(.+)(png|svg|css|ico|jpg|ttf|js)", "dest": "/$1$2" },
+    { "src": "/sites", "methods": ["GET"],  "dest": "api/sites.js" },
+    { "src": "/check", "methods": ["GET"],  "dest": "api/checker.js" },
+    { "src": "^/.+", "dest": "/index.html"}
   ]
 }
