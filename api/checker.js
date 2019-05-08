@@ -44,20 +44,25 @@ const checkSites = async (list, format) => {
 }
 
 const checkUrl = url => {
+  console.log(url)
   return new Promise((resolve, reject) => {
     request(url, (err, response) => {
-      const lastModified = response.headers['last-modified']
-        ? response.headers['last-modified']
-        : 'No last modified info'
-      const statusCode = response.statusCode
-      if (!err) resolve({ url, statusCode, lastModified })
-      else reject(err)
+      if (response !== undefined) {
+        const lastModified = response.headers['last-modified']
+          ? response.headers['last-modified']
+          : 'No last modified info'
+        const statusCode = response.statusCode
+        if (!err) resolve({ url, statusCode, lastModified })
+        else reject(err)
+      } else {
+        resolve({ url, statusCode: '???', lastModified: 'Potentially as SSL issue' })
+      }
     })
   })
 }
 
 const captureOffenders = (sites, site, i) => {
-  const offendingStyle = site.statusCode > 200
+  const offendingStyle = site.statusCode > 200 || site.statusCode === '???'
     ? ` style="color:#F03"`
     : ''
   return `${sites}<tr${offendingStyle}><td>${i})</td><td>${site.url}</td><td>${site.statusCode}</td><td>${site.lastModified}</td></tr>`
