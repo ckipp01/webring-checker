@@ -44,7 +44,6 @@ const checkSites = async (list, format) => {
 }
 
 const checkUrl = url => {
-  console.log(url)
   return new Promise((resolve, reject) => {
     request(url, (err, response) => {
       if (response !== undefined) {
@@ -55,7 +54,7 @@ const checkUrl = url => {
         if (!err) resolve({ url, statusCode, lastModified })
         else reject(err)
       } else {
-        resolve({ url, statusCode: '???', lastModified: 'Potentially as SSL issue' })
+        resolve({ url, statusCode: '???', lastModified: 'Unable to retreive a status code, possibly an SSL issue' })
       }
     })
   })
