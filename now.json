@@ -13,5 +13,6 @@
     { "src": "/sites", "methods": ["GET"],  "dest": "api/sites.js" },
     { "src": "/check", "methods": ["GET"],  "dest": "api/checker.js" },
     { "src": "^/.+", "dest": "/index.html"}
-  ]
+  ],
+  "regions": [ "all"  ]
 }
