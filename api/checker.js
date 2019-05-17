@@ -54,7 +54,7 @@ const checkUrl = url => {
         if (!err) resolve({ url, statusCode, lastModified })
         else reject(err)
       } else {
-        resolve({ url, statusCode: '???', lastModified: 'Unable to retreive a status code, possibly an SSL issue' })
+        resolve({ url, statusCode: '???', lastModified: 'Unable to retreive a status code.' })
       }
     })
   })
@@ -64,16 +64,53 @@ const captureOffenders = (sites, site, i) => {
   const offendingStyle = site.statusCode > 200 || site.statusCode === '???'
     ? ` style="color:#F03"`
     : ''
-  return `${sites}<tr${offendingStyle}><td>${i})</td><td>${site.url}</td><td>${site.statusCode}</td><td>${site.lastModified}</td></tr>`
+  return `${sites}
+    <tr${offendingStyle}>
+      <td>${i})</td>
+      <td><a target="_blank" href="${site.url}">${site.url.split('//')[1]}</a></td>
+      <td>${site.statusCode}</td>
+      <td>${site.lastModified}</td>
+    </tr>`
 }
 
+const style = `
+  * { margin:0;padding:0;border:0;outline:0;text-decoration:none;font-weight:inherit;font-style:inherit;color:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;list-style:none;border-collapse:collapse;border-spacing:0; -webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;}
+
+  body {
+    background:#111;
+    padding:0px; margin:0px;
+  }
+  div {
+    background: #f4f4f4;
+    margin: 15px;
+    color: #333;
+    padding: 15px;
+    font-family:'Monospaced','Courier New',courier;
+    font-size:12px;
+    border-radius: 2px;
+  }
+  th {
+    font-size: 13px;
+    border-bottom: 2px solid;
+  }
+  a {
+    text-decoration: underline black;
+  }
+  tr {
+    line-height: 20px;
+  }
+  h5 {
+    margin: 1em
+  }
+`
+
 const htmlify = list => {
-  const beginBody = `<body style="background:#111;color:#fff;font-family:monospace">`
-  const beginTable = '<table><thead><tr><th></th><th>Url</th><th>Status</th><th>Last Modified</th></thead><tbody>'
+  const beginBody = `<html><head><style>${style}</style></head><body>`
+  const beginTable = '<div><table><thead><tr><th></th><th>Url</th><th>Status</th><th>Last Modified</th></thead><tbody>'
   const tableContent = list.reduce(captureOffenders, '')
   const closingTable = '</tbody></table>'
   const whatIsThis = `<h5><a target="_blank" href="https://wiki.chronica.xyz/#webring-checker">What is this?</a></h5>`
   const goToWebring = `<h5><a target="_blank" href="https://webring.xxiivv.com">Go to xxiivv webring</a></h5>`
-  const closingBody = '</body>'
+  const closingBody = '</div></body></html>'
   return beginBody + beginTable + tableContent + closingTable + whatIsThis + goToWebring + closingBody
 }
