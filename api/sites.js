@@ -1,9 +1,9 @@
 'use strict'
 
-const { gatherSites } = require('../utils/utils.js')
+const { gatherSiteObjects } = require('../utils/utils.js')
 
-module.exports = (req, res) => {
-  gatherSites()
+module.exports = (_, res) => {
+  gatherSiteObjects()
     .then(sites => {
       res.writeHead(200, { 'Content-Type': 'application/json' })
       res.end(JSON.stringify(sites))

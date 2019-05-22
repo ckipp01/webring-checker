@@ -3,7 +3,7 @@
 const request = require('request')
 const url = require('url')
 
-const { gatherSites } = require('../utils/utils')
+const { gatherSiteObjects } = require('../utils/utils')
 
 module.exports = async (req, res) => {
   try {
@@ -12,10 +12,10 @@ module.exports = async (req, res) => {
       ? params.query.format
       : 'json'
     console.time('gatherSites')
-    const sites = await gatherSites()
+    const siteObjects = await gatherSiteObjects()
     console.timeEnd('gatherSites')
     console.time('checkSites')
-    const report = await checkSites(sites, format)
+    const report = await checkSites(siteObjects, format)
     console.timeEnd('checkSites')
     const contentType = format === 'json'
       ? 'application/json'
@@ -43,18 +43,18 @@ const checkSites = async (list, format) => {
   })
 }
 
-const checkUrl = url => {
+const checkUrl = siteObject => {
   return new Promise((resolve, reject) => {
-    request(url, (err, response) => {
+    request(siteObject.url, (err, response) => {
       if (response !== undefined) {
         const lastModified = response.headers['last-modified']
           ? response.headers['last-modified']
           : 'No last modified info'
         const statusCode = response.statusCode
-        if (!err) resolve({ url, statusCode, lastModified })
+        if (!err) resolve({ url: siteObject.url, statusCode, lastModified })
         else reject(err)
       } else {
-        resolve({ url, statusCode: '???', lastModified: 'Unable to retreive a status code.' })
+        resolve({ url: siteObject.url, statusCode: '???', lastModified: 'Unable to retreive a status code.' })
       }
     })
   })
