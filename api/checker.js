@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
     console.timeEnd('checkSites')
     const contentType = format === 'json'
       ? 'application/json'
-      : 'text/html'
+      : 'text/html;charset=UTF-8'
     console.info(`Successfully gathered ${format} report`)
     res.writeHead(200, { 'Content-Type': contentType })
     res.end(report)
@@ -51,7 +51,7 @@ const checkUrl = siteObject => {
           ? response.headers['last-modified']
           : 'No last modified info'
         const statusCode = response.statusCode
-        if (!err) resolve({ url: siteObject.url, statusCode, lastModified })
+        if (!err) resolve({ url: siteObject.url, statusCode, lastModified, title: siteObject.title })
         else reject(err)
       } else {
         resolve({ url: siteObject.url, statusCode: '???', lastModified: 'Unable to retreive a status code.' })
@@ -61,13 +61,17 @@ const checkUrl = siteObject => {
 }
 
 const captureOffenders = (sites, site, i) => {
-  const offendingStyle = site.statusCode > 200 || site.statusCode === '???'
+  const style = site.statusCode > 200 || site.statusCode === '???'
     ? ` style="color:#F03"`
     : ''
   return `${sites}
-    <tr${offendingStyle}>
+    <tr${style}>
       <td>${i})</td>
-      <td><a target="_blank" href="${site.url}">${site.url.split('//')[1]}</a></td>
+      <td>
+        <a target="_blank" href="${site.url}">
+        ${site.title !== undefined ? site.title : site.url.split('//')[1]}
+        </a>
+      </td>
       <td>${site.statusCode}</td>
       <td>${site.lastModified}</td>
     </tr>`
