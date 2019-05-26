@@ -99,6 +99,9 @@ const style = `
   tr {
     line-height: 20px;
   }
+  td {
+    padding: 0 0.5em;
+  }
   h5 {
     margin: 1em
   }

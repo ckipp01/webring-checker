@@ -4,7 +4,9 @@ const request = require('request')
 
 const cleanLine = line => {
   const dirtyString = line.slice(line.indexOf('{'), line.indexOf('}') + 1)
-  const cleanJSON = dirtyString.replace((/([\w]+)(:")/g), '"$1"$2')
+  const cleanJSON = dirtyString
+    .replace(/\s/g, '')
+    .replace((/([\w]+)(:")/g), '"$1"$2')
   return JSON.parse(cleanJSON)
 }
 
