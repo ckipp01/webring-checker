@@ -6,6 +6,7 @@
 		{ "src": "*.html", "use": "@now/static" },
 		{ "src": "style/*.css", "use": "@now/static" },
 		{ "src": "fonts/*.ttf", "use": "@now/static" },
+		{ "src": "images/*.svg", "use": "@now/static" },
     { "src": "api/*.js", "use": "@now/node" }
   ],
   "routes": [
