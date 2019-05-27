@@ -61,7 +61,6 @@ const checkUrl = siteObject => {
           })
         } else reject(err)
       } else {
-        // TODO remove duplication below and above
         resolve({
           url: siteObject.url,
           statusCode: '???',
@@ -98,8 +97,8 @@ const style = `
   th { font-size: 13px;border-bottom: 2px solid; }
   a { padding: 0 0 0 1em; }
   a:hover { text-decoration: underline black; }
-  td.wiki::after { content:"<wiki>"; color: #A8A8A8; }
-  td.blog::after { content:"<blog>"; color: #A8A8A8; }
+  td.wiki::after { content:"<wiki>"; color: #A8A8A8; padding: 0 1em 0 0; }
+  td.blog::after { content:"<blog>"; color: #A8A8A8; padding: 0 1em 0 0; }
   tr { line-height: 20px; }
   tr.error { color:#F03; }
   h5 { margin: 1em }
@@ -110,8 +109,6 @@ const htmlify = list => {
   const beginTable = '<div><table><thead><tr><th></th><th>Url</th><th>Status</th><th>Last Modified</th></thead><tbody>'
   const tableContent = list.reduce(captureOffenders, '')
   const closingTable = '</tbody></table>'
-  const whatIsThis = `<h5><a target="_blank" href="https://wiki.chronica.xyz/#webring-checker">What is this?</a></h5>`
-  const goToWebring = `<h5><a target="_blank" href="https://webring.xxiivv.com">Go to xxiivv webring</a></h5>`
   const closingBody = '</div></body></html>'
-  return beginBody + beginTable + tableContent + closingTable + whatIsThis + goToWebring + closingBody
+  return beginBody + beginTable + tableContent + closingTable + closingBody
 }
