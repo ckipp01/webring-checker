@@ -1,6 +1,6 @@
 # webring-checker
 
-Small api and service to check the status of the sites in [the xxiivv webring](https://webring.xxiivv.com), and to provide a list of sites. The following options are available.
+Small api and service to check the status of the sites in [the xxiivv webring](https://webring.xxiivv.com) and to provide a list of those sites. The following options are available.
 
   - `GET / will return a description page`
   - `GET /check?format=html` will return an html report of all sites, their status code, and last modified date if available
