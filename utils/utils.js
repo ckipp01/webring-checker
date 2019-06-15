@@ -1,6 +1,7 @@
 'use strict'
 
-const request = require('request')
+const fetch = require('node-fetch')
+const { htmlify } = require('../utils/html')
 
 const cleanLine = line => {
   const dirtyString = line.slice(line.indexOf('{'), line.indexOf('}') + 1)
@@ -10,23 +11,54 @@ const cleanLine = line => {
   return JSON.parse(cleanJSON)
 }
 
-const gatherSiteObjects = () => {
+export const gatherSiteObjects = () => {
   return new Promise((resolve, reject) => {
-    request('https://webring.xxiivv.com/scripts/sites.js', (err, _, body) => {
-      if (!err) {
-        const begin = body.indexOf('[') + 1
-        const end = body.indexOf(']')
+    fetch('https://webring.xxiivv.com/scripts/sites.js')
+      .then(rawResponse => rawResponse.text())
+      .then(data => {
+        const begin = data.indexOf('[') + 1
+        const end = data.indexOf(']')
 
-        const siteObjects = body
+        const siteObjects = data
           .slice(begin, end)
           .split('\n')
           .filter(url => url !== '')
           .map(cleanLine)
 
         resolve(siteObjects)
-      } else reject(err)
-    })
+      })
+      .catch(err => reject(err))
   })
 }
 
-module.exports = { gatherSiteObjects }
+export const checkSites = async (list, format) => {
+  return new Promise((resolve, reject) => {
+    if (format !== 'json' && format !== 'html') reject(Error(`Unsupported format ${format} requested`))
+    const results = list.map(checkUrl)
+    Promise.all(results)
+      .then(data => {
+        if (format === 'json') resolve(JSON.stringify(data))
+        else resolve(htmlify(data))
+      })
+      .catch(err => { reject(err) })
+  })
+}
+
+const checkUrl = siteObject => {
+  return new Promise((resolve, reject) => {
+    fetch(siteObject.url)
+      .then(res => {
+        const lastModified = res.headers.get('last-modified') ||
+          'No last modified info available'
+        const statusCode = res.status || '???'
+        resolve({
+          url: siteObject.url,
+          statusCode,
+          lastModified,
+          title: siteObject.title,
+          type: siteObject.type
+        })
+      })
+      .catch(err => reject(err))
+  })
+}

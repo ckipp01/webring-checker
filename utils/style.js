@@ -1,0 +1,13 @@
+export const style = `
+  * { margin:0;padding:0;border:0;outline:0;text-decoration:none;font-weight:inherit;font-style:inherit;color:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;list-style:none;border-collapse:collapse;border-spacing:0; -webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;}
+  body { background:#111; padding:0px; margin:0px; }
+  div { background: #f4f4f4;margin: 15px;color: #333;padding: 15px;font-family:'Monospaced','Courier New',courier;font-size:12px;border-radius: 2px; }
+  th { font-size: 13px;border-bottom: 2px solid; }
+  a { padding: 0 0 0 1em; }
+  a:hover { text-decoration: underline black; }
+  td.wiki::after { content:"<wiki>"; color: #A8A8A8; padding: 0 1em 0 0; }
+  td.blog::after { content:"<blog>"; color: #A8A8A8; padding: 0 1em 0 0; }
+  tr { line-height: 20px; }
+  tr.error { color:#F03; }
+  h5 { margin: 1em }
+`
