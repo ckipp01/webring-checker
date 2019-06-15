@@ -14,29 +14,28 @@ const formatDate = date => {
 }
 
 export const parseAtomFeed = feed => {
-  const title = feed.feed.title
-  const link = feed.feed.id
+  const title = feed.feed.title || 'Missing Title'
+  const link = feed.feed.id || ''
   const content = feed.feed.entry
   return content.map(atomPost => {
-    const postTitle = atomPost.title
-    const postDate = formatDate(atomPost.published)
+    const postTitle = atomPost.title || 'Missing Title'
+    const postDate = formatDate(atomPost.published) || '0000-00-00'
     const postLink = atomPost.link || ''
-    const postContent = atomPost.summary
+    const postContent = atomPost.summary || 'Missing Summary'
     const post = { postTitle, postDate, postLink, postContent }
     return { title, link, post }
   })
 }
 
 export const parseRssFeed = feed => {
-  const title = feed.rss.channel.title
-  const link = feed.rss.channel.link
+  const title = feed.rss.channel.title || 'Missing Title'
+  const link = feed.rss.channel.link || ''
   const content = feed.rss.channel.item
   return content.map(rssPost => {
-    console.log(rssPost)
-    const postTitle = rssPost.title
-    const postDate = formatDate(rssPost.pubDate)
+    const postTitle = rssPost.title || 'Missing Title'
+    const postDate = formatDate(rssPost.pubDate) || '0000-00-00'
     const postLink = rssPost.link || ''
-    const postContent = rssPost.description
+    const postContent = rssPost.description || 'Missing Summary'
     const post = { postTitle, postDate, postLink, postContent }
     return { title, link, post }
   })

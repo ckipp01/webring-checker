@@ -1,6 +1,6 @@
 'use strict'
 
-const { gatherSiteObjects } = require('../utils/utils.js')
+const { gatherSiteObjects } = require('../utils/general')
 
 module.exports = (_, res) => {
   gatherSiteObjects()

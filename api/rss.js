@@ -7,15 +7,18 @@ const {
   parseRssFeed
 } = require('../utils/rss')
 const { htmlifyFeed } = require('../utils/html')
-const { gatherSiteObjects } = require('../utils/utils')
+const { gatherSiteObjects } = require('../utils/general')
 const url = require('url')
 
 module.exports = async (req, res) => {
   try {
     const params = url.parse(req.url, true)
     const format = params.query.format
-      ? params.query.format
+      ? params.query.format.toLowerCase()
       : 'html'
+    if (format !== 'html' && format !== 'json') {
+      throw Error(`Unsupported format ${format}`)
+    }
     const siteObjects = await gatherSiteObjects()
     const feedUrls = siteObjects
       .filter(site => site.rss)
@@ -28,8 +31,8 @@ module.exports = async (req, res) => {
         : parseRssFeed(feed)
     })
     const flattend = [].concat.apply([], standardized)
-    const ordered = await orderByDate(flattend)
-    const finalFeed = format === 'html'
+    const ordered = orderByDate(flattend)
+    const finalFeed = await format === 'html'
       ? htmlifyFeed(ordered)
       : JSON.stringify(ordered)
     const contentType = format === 'html'

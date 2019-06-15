@@ -1,15 +1,13 @@
 'use strict'
 
-const { checkSites } = require('../utils/utils')
+const { checkSites, gatherSiteObjects } = require('../utils/general')
 const url = require('url')
-
-const { gatherSiteObjects } = require('../utils/utils')
 
 module.exports = async (req, res) => {
   try {
     const params = url.parse(req.url, true)
     const format = params.query.format
-      ? params.query.format
+      ? params.query.format.toLowerCase()
       : 'json'
     const siteObjects = await gatherSiteObjects()
     const report = await checkSites(siteObjects, format)
