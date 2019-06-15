@@ -1,7 +1,7 @@
 'use strict'
 
 const fetch = require('node-fetch')
-const { htmlify } = require('../utils/html')
+const { htmlifyReport } = require('../utils/html')
 
 const cleanLine = line => {
   const dirtyString = line.slice(line.indexOf('{'), line.indexOf('}') + 1)
@@ -38,7 +38,7 @@ export const checkSites = async (list, format) => {
     Promise.all(results)
       .then(data => {
         if (format === 'json') resolve(JSON.stringify(data))
-        else resolve(htmlify(data))
+        else resolve(htmlifyReport(data))
       })
       .catch(err => { reject(err) })
   })

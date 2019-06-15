@@ -13,6 +13,7 @@
     { "src": "/(.+)(png|svg|css|ico|jpg|ttf|js)", "dest": "/$1$2" },
     { "src": "/sites", "methods": ["GET"],  "dest": "api/sites.js" },
     { "src": "/check", "methods": ["GET"],  "dest": "api/checker.js" },
+    { "src": "/rss", "methods": ["GET"],  "dest": "api/rss.js" },
     { "src": "^/.+", "dest": "/index.html"}
   ],
   "regions": [ "all"  ]

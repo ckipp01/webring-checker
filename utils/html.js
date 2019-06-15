@@ -1,5 +1,6 @@
 'use strict'
 
+const he = require('he')
 const { style } = require('./style')
 
 const captureOffenders = (sites, site, i) => {
@@ -19,11 +20,27 @@ const captureOffenders = (sites, site, i) => {
     </tr>`
 }
 
-export const htmlify = list => {
-  const beginBody = `<html><head><style>${style}</style></head><body>`
-  const beginTable = '<div><table><thead><tr><th></th><th>Url</th><th>Status</th><th>Last Modified</th></thead><tbody>'
+const header = `<html><head><style>${style}</style></head>`
+
+export const htmlifyReport = list => {
+  const beginTable = '<body><div><table><thead><tr><th></th><th>Url</th><th>Status</th><th>Last Modified</th></thead><tbody>'
   const tableContent = list.reduce(captureOffenders, '')
   const closingTable = '</tbody></table>'
   const closingBody = '</div></body></html>'
-  return beginBody + beginTable + tableContent + closingTable + closingBody
+  return header + beginTable + tableContent + closingTable + closingBody
+}
+
+export const htmlifyFeed = feed => {
+  const allContent = feed.reduce((html, entry) => {
+    const postTitleLink = entry.post.postLink !== ''
+      ? `<a target="_blank" href="${entry.post.postLink}">${entry.post.postTitle}</a>`
+      : entry.post.postTitle
+    return `${html}<div class='rss'>
+              <h2>${entry.title}</h2>
+              <h3>${postTitleLink}</h3>
+              <p>${entry.post.postDate}</p>
+            <div>${he.unescape(entry.post.postContent)}</div>
+           </div>`
+  }, '')
+  return `${header}<div>${allContent}</div>`
 }
