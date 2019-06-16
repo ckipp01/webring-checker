@@ -20,10 +20,24 @@ const captureOffenders = (sites, site, i) => {
     </tr>`
 }
 
-const header = `<html><head><style>${style}</style></head>`
+const header = `<html>
+                  <head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <style>${style}</style>
+                  </head>`
 
 export const htmlifyReport = list => {
-  const beginTable = '<body><div><table><thead><tr><th></th><th>Url</th><th>Status</th><th>Last Modified</th></thead><tbody>'
+  const beginTable = `<body>
+                        <div>
+                          <table>
+                            <thead>
+                              <tr>
+                                <th></th>
+                                <th>Url</th>
+                                <th>Status</th>
+                                <th>Last Modified</th>
+                              </thead>
+                            <tbody>`
   const tableContent = list.reduce(captureOffenders, '')
   const closingTable = '</tbody></table>'
   const closingBody = '</div></body></html>'
@@ -36,11 +50,17 @@ export const htmlifyFeed = feed => {
       ? `<a target="_blank" href="${entry.post.postLink}">${entry.post.postTitle}</a>`
       : entry.post.postTitle
     return `${html}<div class='rss'>
-              <h2>${entry.title}</h2>
+              <h2><a target="_blank" href="${entry.link}">${entry.title}</a></h2>
               <h3>${postTitleLink}</h3>
               <p>${entry.post.postDate}</p>
             <div>${he.unescape(entry.post.postContent)}</div>
            </div>`
   }, '')
-  return `${header}<div>${allContent}</div>`
+  return `${header}
+            <div>
+              <h1>
+                <a target="_blank" href="https://webring.xxiivv.com">XXIIVV Webring Feed</a>
+              </h1>
+              ${allContent}
+            </div>`
 }
