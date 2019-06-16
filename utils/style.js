@@ -7,7 +7,8 @@ export const style = `
   div.rss { max-width: 986px; margin: auto; }
   img, video { max-width: 100%; margin: 5px; }
   th { font-size: 13px;border-bottom: 2px solid; }
-  a { padding: 0 0 0 1em; text-decoration: underline black; }
+  a { text-decoration: underline black; }
+  td { padding: 0 0 0 1em; }
   h1 > a, h2 > a, h3 > a { text-decoration: none; }
   a:hover { text-decoration: underline black; }
   td.wiki::after { content:"<wiki>"; color: #A8A8A8; padding: 0 1em 0 0; }

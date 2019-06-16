@@ -1,19 +1,23 @@
 'use strict'
 
-const he = require('he')
 const { style } = require('./style')
 
 const captureOffenders = (sites, site, i) => {
   const errorClass = site.statusCode > 200 || site.statusCode === '???'
     ? 'error'
     : ''
+
+  const siteName = errorClass === 'error'
+    ? site.title !== undefined ? site.title : site.url.split('//')[1]
+    : `<a target="_blank" href="${site.url}">${site.title !== undefined ? site.title : site.url.split('//')[1]}</a>`
+
   const siteType = site.type !== undefined ? site.type : ''
 
   return `${sites}
-    <tr${errorClass}>
+    <tr class="${errorClass}">
       <td>${i})</td>
       <td class="${siteType}">
-        <a target="_blank" href="${site.url}">${site.title !== undefined ? site.title : site.url.split('//')[1]}</a>
+        ${siteName}
       </td>
       <td>${site.statusCode}</td>
       <td>${site.lastModified}</td>
@@ -53,7 +57,7 @@ export const htmlifyFeed = feed => {
               <h2><a target="_blank" href="${entry.link}">${entry.title}</a></h2>
               <h3>${postTitleLink}</h3>
               <p>${entry.post.postDate}</p>
-            <div>${he.unescape(entry.post.postContent)}</div>
+            <div>${entry.post.postContent}</div>
            </div>`
   }, '')
   return `${header}

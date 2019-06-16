@@ -1,6 +1,7 @@
 'use strict'
 
 const fetch = require('node-fetch')
+const he = require('he')
 const parser = require('fast-xml-parser')
 
 const padDate = n => n < 10 ? '0' + n : n
@@ -20,8 +21,8 @@ export const parseAtomFeed = feed => {
   return content.map(atomPost => {
     const postTitle = atomPost.title || 'Missing Title'
     const postDate = formatDate(atomPost.published) || '0000-00-00'
-    const postLink = atomPost.link || ''
-    const postContent = atomPost.summary || 'Missing Summary'
+    const postLink = atomPost.link['_href'] || ''
+    const postContent = atomPost.summary['#text'] || 'Missing Summary'
     const post = { postTitle, postDate, postLink, postContent }
     return { title, link, post }
   })
@@ -34,7 +35,7 @@ export const parseRssFeed = feed => {
   return content.map(rssPost => {
     const postTitle = rssPost.title || 'Missing Title'
     const postDate = formatDate(rssPost.pubDate) || '0000-00-00'
-    const postLink = rssPost.link || ''
+    const postLink = rssPost.link || rssPost.guid || ''
     const postContent = rssPost.description || 'Missing Summary'
     const post = { postTitle, postDate, postLink, postContent }
     return { title, link, post }
@@ -48,8 +49,15 @@ export const orderByDate = arr => {
 }
 
 export const fetchFeed = site => {
+  const options = {
+    attributeNamePrefix: '_',
+    ignoreAttributes: false,
+    attrValueProcessor: a => he.decode(a, { isAttributeValue: true }),
+    tagValueProcessor: a => he.decode(a)
+  }
+
   return fetch(site)
     .then(response => response.text())
-    .then(str => parser.parse(str))
+    .then(str => parser.parse(str, options))
     .catch(err => { throw err })
 }

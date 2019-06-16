@@ -45,7 +45,7 @@ export const checkSites = async (list, format) => {
 }
 
 const checkUrl = siteObject => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     fetch(siteObject.url)
       .then(res => {
         const lastModified = res.headers.get('last-modified') ||
@@ -59,6 +59,15 @@ const checkUrl = siteObject => {
           type: siteObject.type
         })
       })
-      .catch(err => reject(err))
+      .catch(err => {
+        console.error(err)
+        resolve({
+          url: siteObject.url,
+          statusCode: '???',
+          lastModified: 'No last modified info available',
+          title: siteObject.title,
+          type: siteObject.type
+        })
+      })
   })
 }
