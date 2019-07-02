@@ -43,9 +43,8 @@ export const htmlifyReport = list => {
                               </thead>
                             <tbody>`
   const tableContent = list.reduce(captureOffenders, '')
-  const closingTable = '</tbody></table>'
-  const closingBody = '</div></body></html>'
-  return header + beginTable + tableContent + closingTable + closingBody
+  const closing = '</tbody></table></div></body></html>'
+  return header + beginTable + tableContent + closing
 }
 
 export const htmlifyFeed = feed => {
@@ -61,10 +60,11 @@ export const htmlifyFeed = feed => {
            </div>`
   }, '')
   return `${header}
+            <body>
             <div>
               <h1>
                 <a target="_blank" href="https://webring.xxiivv.com">XXIIVV Webring Feed</a>
               </h1>
               ${allContent}
-            </div>`
+            </div></body>`
 }
