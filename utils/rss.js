@@ -36,7 +36,10 @@ export const parseRssFeed = feed => {
     const postTitle = rssPost.title || 'Missing Title'
     const postDate = formatDate(rssPost.pubDate) || '0000-00-00'
     const postLink = rssPost.link || rssPost.guid || ''
-    const postContent = rssPost.description || 'Missing Summary'
+    // content:encoded targets feedburner feeds
+    const postContent = rssPost['content:encoded']
+      ? rssPost['content:encoded']
+      : rssPost.description
     const post = { postTitle, postDate, postLink, postContent }
     return { title, link, post }
   })
