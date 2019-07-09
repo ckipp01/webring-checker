@@ -7,17 +7,13 @@ const captureOffenders = (sites, site, i) => {
     ? 'error'
     : ''
 
-  const siteName = errorClass === 'error'
-    ? site.title !== undefined ? site.title : site.url.split('//')[1]
-    : `<a target="_blank" href="${site.url}">${site.title !== undefined ? site.title : site.url.split('//')[1]}</a>`
-
   const siteType = site.type !== undefined ? site.type : ''
 
   return `${sites}
     <tr class="${errorClass}">
       <td>${i})</td>
       <td class="${siteType}">
-        ${siteName}
+        <a target="_blank" href="${site.url}">${site.title !== undefined ? site.title : site.url.split('//')[1]}</a>
       </td>
       <td>${site.statusCode}</td>
       <td>${site.lastModified}</td>
