@@ -3,6 +3,8 @@
 const fetch = require('node-fetch')
 const { htmlifyReport } = require('../utils/html')
 
+const reTag = /([^&]|^)#([a-zA-Z0-9]+)/g
+
 const cleanLine = line => {
   const dirtyString = line.slice(line.indexOf('{'), line.indexOf('}') + 1)
   const cleanJSON = dirtyString
@@ -29,6 +31,35 @@ export const gatherSiteObjects = () => {
         resolve(siteObjects)
       })
       .catch(err => reject(err))
+  })
+}
+
+const escapeHtml = unsafe => unsafe.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;')
+
+const parseFeed = (author, feed) => {
+  const lines = feed.split('\n')
+  const entries = []
+  for (const id in lines) {
+    const line = lines[id].trim()
+    if (line === '') { continue }
+    const parts = line.replace('   ', '\t').split('\t')
+    const date = parts[0].trim()
+    const body = escapeHtml(parts[1].trim()).trim()
+    const channel = body.substr(0, 1) === '/' ? body.split(' ')[0].substr(1).toLowerCase() : body.substr(0, 1) === '@' ? 'veranda' : 'lobby'
+    const tags = (body.match(reTag) || []).map(a => a.substr(a.indexOf('#') + 1).toLowerCase())
+    const offset = new Date() - new Date(date)
+    entries.push({ date, body, author, offset, channel, tags })
+  }
+  return entries
+}
+
+export const fetchFeed = site => {
+  return new Promise(resolve => {
+    console.log(site.feed)
+    fetch(site.feed)
+      .then(rawResponse => rawResponse.text())
+      .then(data => resolve({ author: site.author, feed: parseFeed(site.author, data) }))
+      .catch(err => resolve({ author: site.author, feed: err.message }))
   })
 }
 

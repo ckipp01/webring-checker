@@ -1,6 +1,6 @@
 {
   "name": "webring-checker",
-  "version": "0.9.3",
+  "version": "0.10.3",
   "description": "Small service to check the health of the webring",
   "main": "index.js",
   "author": "Chris Kipp",
@@ -10,6 +10,6 @@
     "node-fetch": "2.6.0"
   },
   "devDependencies": {
-    "standard": "12.0.1"
+    "standard": "13.0.0"
   }
 }

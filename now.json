@@ -3,17 +3,18 @@
   "name": "webring-checker",
   "alias": "webring-checker.now.sh",
   "builds": [
-		{ "src": "*.html", "use": "@now/static" },
-		{ "src": "style/*.css", "use": "@now/static" },
-		{ "src": "fonts/*.ttf", "use": "@now/static" },
-		{ "src": "images/*.svg", "use": "@now/static" },
+    { "src": "*.html", "use": "@now/static" },
+    { "src": "style/*.css", "use": "@now/static" },
+    { "src": "fonts/*.ttf", "use": "@now/static" },
+    { "src": "images/*.svg", "use": "@now/static" },
     { "src": "api/*.js", "use": "@now/node" }
   ],
   "routes": [
     { "src": "/(.+)(png|svg|css|ico|jpg|ttf|js)", "dest": "/$1$2" },
-    { "src": "/sites", "methods": ["GET"],  "dest": "api/sites.js" },
     { "src": "/check", "methods": ["GET"],  "dest": "api/checker.js" },
+    { "src": "/hallway", "methods": ["GET"],  "dest": "api/hallway.js" },
     { "src": "/rss", "methods": ["GET"],  "dest": "api/rss.js" },
+    { "src": "/sites", "methods": ["GET"],  "dest": "api/sites.js" },
     { "src": "^/.+", "dest": "/index.html"}
   ],
   "regions": [ "all"  ]
