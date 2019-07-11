@@ -1,6 +1,6 @@
 # webring-checker
 
-Small api providing a few utilities and views the xxiivv webring](https://webring.xxiivv.com).
+Small api providing a few utilities and views the [xxiivv webring](https://webring.xxiivv.com).
 
   - `GET / will return a description page`
   - `GET /check?format=html` will return an html report of all sites, their status code, and last modified date if available
