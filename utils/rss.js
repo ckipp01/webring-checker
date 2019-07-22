@@ -14,6 +14,18 @@ const formatDate = date => {
   return [year, month, day].join('-')
 }
 
+const handleEnclosure = enclosureObject => {
+  if (enclosureObject._type === 'audio/mpeg') {
+    return `<audio controls>
+              <source src="${enclosureObject._url}" type="audio/mpeg">
+                Your browser doesn't support audio</audio>
+              </source>
+            </audio>`
+  } else {
+    return 'This type of enclosure is not supported yet'
+  }
+}
+
 export const parseAtomFeed = feed => {
   const title = feed.feed.title || 'Missing Title'
   const link = feed.feed.id || ''
@@ -35,11 +47,15 @@ export const parseRssFeed = feed => {
   return content.map(rssPost => {
     const postTitle = rssPost.title || 'Missing Title'
     const postDate = formatDate(rssPost.pubDate) || '0000-00-00'
-    const postLink = rssPost.link || rssPost.guid || ''
-    // content:encoded targets feedburner feeds
-    const postContent = rssPost['content:encoded']
-      ? rssPost['content:encoded']
-      : rssPost.description
+    const postLink = rssPost.link || ''
+    let postContent = ''
+    if (rssPost.enclosure) {
+      postContent = handleEnclosure(rssPost.enclosure)
+    } else if (rssPost['content:encoded']) {
+      postContent = rssPost['content-encoded']
+    } else {
+      postContent = rssPost.description
+    }
     const post = { postTitle, postDate, postLink, postContent }
     return { title, link, post }
   })
