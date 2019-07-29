@@ -5,7 +5,7 @@
   "main": "index.js",
   "author": "Chris Kipp",
   "dependencies": {
-    "fast-xml-parser": "3.12.17",
+    "fast-xml-parser": "3.12.19",
     "he": "1.2.0",
     "node-fetch": "2.6.0"
   },

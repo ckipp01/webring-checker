@@ -5,7 +5,7 @@ export const style = `
   body { background:#111; padding:0px; margin:0px; line-height: 1.5; }
   div { background: #f4f4f4;margin: 15px;color: #333;padding: 15px;font-family:'Monospaced','Courier New',courier;font-size:12px;border-radius: 2px; }
   div.rss { max-width: 986px; margin: auto; }
-  img, video { max-width: 100%; margin: 5px; }
+  img, video { max-width: 100%; margin: 5px; height: auto; }
   th { font-size: 13px;border-bottom: 2px solid; }
   a { text-decoration: underline black; }
   td { padding: 0 0 0 1em; }
