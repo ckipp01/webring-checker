@@ -11,8 +11,7 @@ export const style = `
   td { padding: 0 0 0 1em; }
   h1 > a, h2 > a, h3 > a { text-decoration: none; }
   a:hover { text-decoration: underline black; }
-  td.wiki::after { content:"<wiki>"; color: #A8A8A8; padding: 0 1em 0 0; }
-  td.blog::after { content:"<blog>"; color: #A8A8A8; padding: 0 1em 0 0; }
+  td:nth-of-type(3) { color: #A8A8A8; }
   tr { line-height: 20px; }
   tr.error { color:#F03; }
   pre { background: white; padding: 5px; }
