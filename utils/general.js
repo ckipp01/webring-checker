@@ -3,30 +3,24 @@
 const fetch = require('node-fetch')
 const { htmlifyReport } = require('../utils/html')
 
-const cleanLine = line => {
-  const dirtyString = line.slice(line.indexOf('{'), line.indexOf('}') + 1)
-  const cleanJSON = dirtyString
-    .replace(/\s/g, '')
-    .replace((/([\w]+)(:')/g), '"$1"$2')
-    .replace(/'/g, '"')
-  return JSON.parse(cleanJSON)
-}
-
 export const gatherSiteObjects = () => {
   return new Promise((resolve, reject) => {
     fetch('https://webring.xxiivv.com/scripts/sites.js')
       .then(rawResponse => rawResponse.text())
       .then(data => {
-        const begin = data.indexOf('[') + 1
-        const end = data.indexOf(']')
+        const begin = data.indexOf('[')
+        const end = data.indexOf(']') + 1
 
         const siteObjects = data
           .slice(begin, end)
-          .split('\n')
-          .filter(url => url !== '')
-          .map(cleanLine)
+          .replace(/(\r\n|\n|\r)/gm,'')
+          .replace(/\s/g, '')
+          .replace((/([\w]+)(:')/g), '"$1"$2')
+          .replace(/'/g, '"')
 
-        resolve(siteObjects)
+        const parsedSites = JSON.parse(siteObjects) 
+
+        resolve(parsedSites)
       })
       .catch(err => reject(err))
   })
