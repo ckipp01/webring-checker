@@ -1,6 +1,6 @@
 {
   "name": "webring-checker",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Small service to check the health of the webring",
   "main": "index.js",
   "author": "Chris Kipp",
@@ -10,6 +10,6 @@
     "node-fetch": "2.6.0"
   },
   "devDependencies": {
-    "eslint": "6.3.0"
+    "eslint": "6.4.0"
   }
 }
