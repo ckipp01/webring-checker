@@ -1,6 +1,6 @@
 {
   "name": "webring-checker",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Small service to check the health of the webring",
   "main": "index.js",
   "author": "Chris Kipp",

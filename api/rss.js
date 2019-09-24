@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
       .map(site => site.rss)
     const calls = await feedUrls.map(fetchFeed)
     const feeds = await Promise.all(calls)
-    const standardized = await feeds.map(feed => {
+    const standardized = feeds.map(feed => {
       return 'feed' in feed
         ? parseAtomFeed(feed)
         : parseRssFeed(feed)
