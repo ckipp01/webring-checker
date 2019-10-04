@@ -14,7 +14,7 @@ export const style = `
   td:nth-of-type(3) { color: #A8A8A8; }
   tr { line-height: 20px; }
   tr.error { color:#F03; }
-  pre { background: white; padding: 5px; }
+  pre { background: white; padding: 5px; white-space: pre-wrap; }
   h1 { font-size: 2em; text-align: center; }
   h2 { font-size: 1.5em; }
   h3 { font-size: 1.24em; }
