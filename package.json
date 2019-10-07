@@ -1,15 +1,15 @@
 {
   "name": "webring-checker",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Small service to check the health of the webring",
   "main": "index.js",
   "author": "Chris Kipp",
   "dependencies": {
-    "fast-xml-parser": "3.12.20",
+    "fast-xml-parser": "3.13.0",
     "he": "1.2.0",
     "node-fetch": "2.6.0"
   },
   "devDependencies": {
-    "eslint": "6.4.0"
+    "eslint": "6.5.1"
   }
 }
