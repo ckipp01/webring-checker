@@ -1,5 +1,7 @@
 # webring-checker
 
+NOTE: This project is currently not live. Instead, consider using the [webring-cli](https://github.com/ckipp01/webring-cli).
+
 Small api providing a few utilities and views the [xxiivv webring](https://webring.xxiivv.com).
 
   - `GET / will return a description page`
